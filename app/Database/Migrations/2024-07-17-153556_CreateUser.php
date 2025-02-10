@@ -4,50 +4,62 @@ namespace App\Database\Migrations;
 
 use CodeIgniter\Database\Migration;
 
-class CreateUsersTable extends Migration
-{
-    public function up()
-    {
+class CreateUsersTable extends Migration {
+    public function up() {
         $this->forge->addField([
             'id' => [
                 'type'           => 'INT',
-                'constraint'     => 5,
+                'constraint'     => 11,
                 'unsigned'       => true,
                 'auto_increment' => true,
             ],
-            'name' => [
+            'first_name' => [
+                'type'       => 'VARCHAR',
+                'constraint' => '100',
+            ],
+            'last_name' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '100',
             ],
             'email' => [
                 'type'       => 'VARCHAR',
-                'constraint' => '100',
+                'constraint' => '255',
+                'unique'     => true,
             ],
             'password' => [
-                'type'       => 'VARCHAR',
+                'type' => 'VARCHAR',
                 'constraint' => '255',
             ],
-            'profile_picture' => [
+            'role' => [
+                'type'       => 'ENUM',
+                'constraint' => ['admin', 'customer'],
+                'default'    => 'customer',
+            ],
+            'profile_image' => [
                 'type'       => 'VARCHAR',
                 'constraint' => '255',
                 'null'       => true,
             ],
-            'created_at' => [
-                'type'       => 'DATETIME',
-                'null'       => true,
+            'last_login' => [
+                'type'    => 'TIMESTAMP',
+                'null'    => true,
+            ],
+           'created_at' => [
+            'type'    => 'DATETIME',
+            'null'    => true,  // Allow NULL
+            'default' => null,  // Default value is NULL
             ],
             'updated_at' => [
-                'type'       => 'DATETIME',
-                'null'       => true,
+                'type'    => 'DATETIME',
+                'null'    => true,  // Allow NULL
+                'default' => null,  // Default value is NULL
             ],
         ]);
-
-        $this->forge->addKey('id', true);
+        $this->forge->addPrimaryKey('id');
         $this->forge->createTable('users');
     }
 
-    public function down()
-    {
+    public function down() {
         $this->forge->dropTable('users');
     }
 }
